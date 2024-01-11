@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
@@ -8,7 +8,7 @@ import { Textarea } from "../components/ui/Textarea";
 import { useForm } from "react-hook-form";
 dayjs.extend(utc);
 
-export function TaskFormPage() {
+const TaskFormPage = () => {
   const { createTask, getTask, updateTask } = useTasks();
   const navigate = useNavigate();
   const params = useParams();
@@ -33,10 +33,9 @@ export function TaskFormPage() {
         });
       }
 
-      // navigate("/tasks");
+      navigate("/");
     } catch (error) {
-      console.log(error);
-      // window.location.href = "/";
+      console.error(error);
     }
   };
 
@@ -46,44 +45,47 @@ export function TaskFormPage() {
         const task = await getTask(params.id);
         setValue("title", task.title);
         setValue("description", task.description);
-        setValue(
-          "date",
-          task.date ? dayjs(task.date).utc().format("YYYY-MM-DD") : ""
-        );
         setValue("completed", task.completed);
       }
     };
     loadTask();
-  }, []);
+  }, [params.id, getTask, setValue]);
 
   return (
     <Card>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Label htmlFor="title">Title</Label>
+        <Label htmlFor="title">Título</Label>
         <Input
           type="text"
           name="title"
-          placeholder="Title"
-          {...register("title")}
+          placeholder="Título"
+          {...register("title",{required:true})}
           autoFocus
         />
         {errors.title && (
-          <p className="text-red-500 text-xs italic">Please enter a title.</p>
+          <p className="text-red-500 text-xs italic">Porfavor ingrese un título.</p>
         )}
 
-        <Label htmlFor="description">Description</Label>
+        <Label htmlFor="description">Descripción</Label>
         <Textarea
           name="description"
           id="description"
           rows="3"
-          placeholder="Description"
-          {...register("description")}
-        ></Textarea>
+          placeholder="Descripción"
+          {...register("description", {required:true})}
+          autoFocus
+        >
 
-        <Label htmlFor="date">Date</Label>
-        <Input type="date" name="date" {...register("date")} />
-        <Button>Save</Button>
+        </Textarea>
+        {errors.title && (
+          <p className="text-red-500 text-xs italic">Porfavor ingrese una descripción.</p>
+        )}
+
+
+        <Button type="submit">Guardar</Button>
       </form>
     </Card>
   );
-}
+};
+
+export default TaskFormPage;

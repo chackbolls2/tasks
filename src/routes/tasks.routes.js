@@ -1,25 +1,25 @@
 import { Router } from "express";
 import {
+  changeState,
   createTask,
   deleteTask,
   getTask,
   getTasks,
   updateTask,
 } from "../controllers/tasks.controllers.js";
-import { auth } from "../middlewares/auth.middleware.js";
-import { validateSchema } from "../middlewares/validator.middleware.js";
-import { createTaskSchema } from "../schemas/task.schema.js";
 
 const router = Router();
 
-router.get("/tasks", auth, getTasks);
+router.get("/tasks", getTasks);
 
-router.post("/tasks", auth, validateSchema(createTaskSchema), createTask);
+router.post("/tasks", createTask);
 
-router.get("/tasks/:id", auth, getTask);
+router.put("/tasks/:taskId/state", changeState);
 
-router.put("/tasks/:id", auth, updateTask);
+router.get("/tasks/:id", getTask);
 
-router.delete("/tasks/:id", auth, deleteTask);
+router.put("/tasks/:id", updateTask);
+
+router.delete("/tasks/:id", deleteTask);
 
 export default router;

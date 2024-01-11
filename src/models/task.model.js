@@ -10,18 +10,16 @@ const taskSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    date: {
-      type: Date,
-      default: Date.now,
-    },
-    user: {
-      type: mongoose.Types.ObjectId,
-      ref: "User",
-    },
+    state: {
+      type: Boolean,
+      default: true,
+    }
   },
   {
     timestamps: true,
   }
+
+
 );
 
 export default mongoose.model("Task", taskSchema);

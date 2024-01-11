@@ -5,6 +5,7 @@ import {
   getTasksRequest,
   getTaskRequest,
   updateTaskRequest,
+  changeStateRequest,
 } from "../api/tasks";
 
 const TaskContext = createContext();
@@ -58,6 +59,16 @@ export function TaskProvider({ children }) {
     }
   };
 
+  const changeState = async (taskId) => {
+    try {
+      await changeStateRequest(taskId);
+      //toast.success('Empleado actualizado exitosamente');
+    } catch (error) {
+      setErrors(error.response.data);
+    }
+  };
+
+
   return (
     <TaskContext.Provider
       value={{
@@ -67,6 +78,7 @@ export function TaskProvider({ children }) {
         createTask,
         getTask,
         updateTask,
+        changeState,
       }}
     >
       {children}
