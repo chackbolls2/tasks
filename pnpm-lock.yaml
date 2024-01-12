@@ -25,7 +25,7 @@ dependencies:
   zod:
     specifier: ^3.21.4
     version: 3.21.4
-
+ 
 devDependencies:
   cross-env:
     specifier: ^7.0.3
